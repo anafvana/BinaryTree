@@ -123,14 +123,27 @@ public class EksamenSBinTre<T> {
     }
 
     public int antall(T verdi) {
-        //Sjekk om verdien ikke er null
-        //Sjekk om verdien = roten
-        //Sjekk om verdi er < p
-        //True -> p = p.venstre; false p=p.høyre
-        //Sjekk om verdien = p
-        //Break når vi blir send til en null node
+        int result = 0;
+        //Sjekk om verdien er null
+        if (verdi==null) result=antall;
 
-        //Return antall
+        else{
+            Node<T> p = rot;
+            while(p != null){
+                //Sjekk om verdien >= p
+                if (this.comp.compare(verdi, p.verdi) >= 0){
+                    if (this.comp.compare(verdi, p.verdi) == 0) result++; //Sjekk om verdien == p og, hvis true, increase result
+                    //True -> p = p.venstre
+                    p = p.høyre;
+                } else {
+                    //False -> p = p.venstre
+                    p = p.venstre;
+                }
+            }
+        }
+
+        //Return antall ganger verdien er i lista
+        return result;
     }
 
     public void nullstill() {
