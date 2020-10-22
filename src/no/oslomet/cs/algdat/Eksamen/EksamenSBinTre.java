@@ -123,7 +123,14 @@ public class EksamenSBinTre<T> {
     }
 
     public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Sjekk om verdien ikke er null
+        //Sjekk om verdien = roten
+        //Sjekk om verdi er < p
+        //True -> p = p.venstre; false p=p.høyre
+        //Sjekk om verdien = p
+        //Break når vi blir send til en null node
+
+        //Return antall
     }
 
     public void nullstill() {
