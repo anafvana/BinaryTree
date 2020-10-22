@@ -82,15 +82,36 @@ public class EksamenSBinTre<T> {
 
     public boolean leggInn(T verdi) {
         //Test if null
+        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
-        //Hjelpevariabel (Node)
-        //Sæk sist p (dybde) og sett den som forelder
+        //Hjelpevariabel
+        Node<T> p = rot, pParent = null;
+        int temp = 0;
+
+        //Søk sist p (dybde) og sett den som forelder
+        while (p != null){
+            pParent = p;
+            temp = this.comp.compare(verdi, p.verdi);
+            p = temp < 0 ? p.venstre : p.høyre;
+        }
 
         //Lag ny node med verdien
+        p = new Node<>(verdi, null, null, null);
+
         //Hvis ingen andre noder, ny node = rot
-        //Ellers sjekk om < eller > forelder
-        //Sett dem som høyre eller venstre node
-        return false; //placeholder
+        if (pParent == null){
+            rot = p;
+        } else {
+            //Definerer forelder
+            p.forelder = pParent;
+            //Ellers sjekk om < eller > forelder
+            //Sett dem som høyre eller venstre node
+            if(temp<0) pParent.venstre = p;
+            else pParent.høyre = p;
+        }
+
+        antall++;
+        return true; //Vellykket!
     }
 
     public boolean fjern(T verdi) {
