@@ -88,7 +88,7 @@ public class EksamenSBinTre<T> {
         Node<T> p = rot, pParent = null;
         int temp = 0;
 
-        //Søk sist p (dybde) og sett den som forelder
+        //Søk riktig posisjon og sett sist verdien i "linje" som forelder
         while (p != null){
             pParent = p;
             temp = this.comp.compare(verdi, p.verdi);
