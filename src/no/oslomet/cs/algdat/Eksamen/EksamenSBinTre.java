@@ -201,10 +201,15 @@ public class EksamenSBinTre<T> {
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
         //finne først postorder med rot
-        //Node p = rot
-        //while (p!=null) finne nest i postorden (oppgaven kjøres med den og p blir den)
+        Node<T> p = førstePostorden(rot);
+
+         while (p != null){
+            //gjøre oppgave
+            oppgave.utførOppgave(p.verdi);
+            //finne nest i postorder
+            p = nestePostorden(p);
+        };
     }
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
