@@ -117,20 +117,94 @@ public class EksamenSBinTre<T> {
 
     public boolean fjern(T verdi) {
         //test om verdi = null -> return false
+        if (verdi == null) return false;
+
         //hjelpevariabel node
-        //om verdi != null, søk på verdien i treet
+        Node<T> p = rot;
+        Node<T> pParent = null;
+
+        //søk på verdien i treet
+        while(p != null){
+            //Sjekk om verdien >= p
+            if (this.comp.compare(verdi, p.verdi) >= 0){
+                if (this.comp.compare(verdi, p.verdi) == 0) break;
+                //True -> p = p.høyre
+                pParent = p;
+                p = p.høyre;
+            } else {
+                //False -> p = p.venstre
+                pParent = p;
+                p = p.venstre;
+            }
+        }
+
         //når den blir fant, rearrange peker
+        if (p==rot){
+            //alle blir slettet
+            antall = 0;
+        } else {
+            Node<T> barn;
+            //p er venstre barn
+            if (p == pParent.venstre){
+                //p har ingen barn
+                if (p.høyre == null && p.venstre == null){
+                    pParent.venstre = null;
+                }
+                //p har venstre barn
+                else if (p.venstre != null){
+                    barn = p.venstre;
+                    pParent.venstre = barn;
+                    barn.forelder = pParent;
+                    p.venstre = null;
+                }
+                //p har høyre barn
+                else {
+                    barn = p.høyre;
+                    pParent.venstre = barn;
+                    barn.forelder = pParent;
+                    p.høyre = null;
+                }
+            }
+            //p er høyre barn
+            else if (p == pParent.høyre){
+                //p har ingen barn
+                if (p.høyre == null && p.venstre == null){
+                    pParent.høyre = null;
+                }
+                //p har venstre barn
+                else if (p.venstre != null){
+                    barn = p.venstre;
+                    pParent.høyre = barn;
+                    barn.forelder = pParent;
+                    p.venstre = null;
+                }
+                //p har høyre barn
+                else {
+                    barn = p.høyre;
+                    pParent.høyre = barn;
+                    barn.forelder = pParent;
+                    p.høyre = null;
+                }
+            } else {
+                throw new IllegalArgumentException("Noe er galt med noden.");
+            }
+
+
+
+
+            //redusere antall
+            antall--;
+        }
         //slett noden
-        //redusere antall
-        //return true
+        p.venstre = null;
+        p.høyre = null;
+        p.forelder = null;
+
+        return true;
     }
 
     public int fjernAlle(T verdi) {
-
-        //fjern noden
-        //redusere antall
-        //øke fjernet
-
+        //hjelpevariabel -> hvor mye har blitt fjernet
         int fjernet = 0;
 
         //test om verdi og tre != null
@@ -161,8 +235,8 @@ public class EksamenSBinTre<T> {
                         }
                     }
 
-                    Node<T> barn;
                     //når den blir fant, rearrangere peker
+                    Node<T> barn;
                     //p er venstre barn
                     if (p == pParent.venstre){
                         //p har ingen barn
@@ -234,7 +308,7 @@ public class EksamenSBinTre<T> {
                 //Sjekk om verdien >= p
                 if (this.comp.compare(verdi, p.verdi) >= 0){
                     if (this.comp.compare(verdi, p.verdi) == 0) result++; //Sjekk om verdien == p og, hvis true, increase result
-                    //True -> p = p.venstre
+                    //True -> p = p.høyre
                     p = p.høyre;
                 } else {
                     //False -> p = p.venstre
@@ -318,7 +392,7 @@ public class EksamenSBinTre<T> {
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
         //if venstre != null -> venstre
-        if (p.venstre != null) postordenRecursive(px.venstre, oppgave);
+        if (p.venstre != null) postordenRecursive(p.venstre, oppgave);
         //if høyre != null -> høyre
         if (p.høyre != null) postordenRecursive(p.høyre, oppgave);
         //noden selv
