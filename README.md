@@ -24,3 +24,8 @@ Metoden returnerer true hvis den er vellykket.
 Ellers, begynte jeg å sjekke (større/mindre/lik) verdien mot en hjelpevariabels (p) sin verdi, som started fra roten.
 Verdien ble sjekket mot p så lang så p ikke var null, og hver gang den ble lik p, ble antall = antall+1.
 Når p ble null, gikk metoden utenfor while-loopen og returnerte den resultaten.
+* Oppgave 3: Den første delen ble løst med en hjelpevariabel (Node q, som blir definert som = p) og en for-loop som, først og fremst, søker å gå hele tiden til venstre, slik at q blir den siste venstre noden i "linje".
+Om q.venstre node er null men det er en q.høyre, da blir q = q.høyre og loop'er vi slik at vi prøver å finne den nederste noden på venstre. En gang til, om q.venstre=null, men q.høyre!=null, q=q.høyre osv. 
+Metoden stopper når både q.venstre og q.høyre er lik null.
+Den andre delen ble løst ved å finne ut om p er lik 1.rot (returnerer null), 2.en høyre node (returnerer forelder node), 3.en venstre node (returnerer den dypste nevø/niese til høyre, som finnes med førstePostorden(Node q) hvor roten er p.forelder.høyre).
+* Oppgave 4: 
