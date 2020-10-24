@@ -209,7 +209,7 @@ public class EksamenSBinTre<T> {
             oppgave.utførOppgave(p.verdi);
             //finne nest i postorder
             p = nestePostorden(p);
-        };
+        }
     }
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
