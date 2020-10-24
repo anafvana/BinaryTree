@@ -80,6 +80,7 @@ public class EksamenSBinTre<T> {
         return antall == 0;
     }
 
+    //Basert på Programkode 5.2.3 a) fra pensum
     public boolean leggInn(T verdi) {
         //Test if null
         Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
@@ -151,11 +152,21 @@ public class EksamenSBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //søk først noden (venstre til høyre)
+        //boolean hjelpevariabel -> starter fra true
+        //while hjelpevariabel
+            //if p.venstre -> true
+            //if p.venstre == null men p.høyre -> fortsatt true
+            //while hjelpevariabel
+            //if p.venstre&p.høyre = null -> false
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //sjekk if p er venstre eller høyre node (eller rot)
+        //if rot -> prøv å gå venstre; om umulig, gå høyre (og repeat)
+        //ellers -> sjekk om venstre eller høyre
+        //om venstre -> move høyre
+        //om høyre -> move up
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
