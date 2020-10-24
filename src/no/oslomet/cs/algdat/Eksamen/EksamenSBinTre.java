@@ -116,24 +116,28 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        //test om verdi = null -> return false
-        if (verdi == null) return false;
-
         //hjelpevariabel node
         Node<T> p = rot;
-        Node<T> pParent = null;
+        Node<T> q = null;
+        boolean fant = false;
+
+        //test om verdi = null -> return false
+        if (verdi == null || p == null) return false;
 
         //søk på verdien i treet
         while(p != null){
             //Sjekk om verdien >= p
             if (this.comp.compare(verdi, p.verdi) >= 0){
-                if (this.comp.compare(verdi, p.verdi) == 0) break;
+                if (this.comp.compare(verdi, p.verdi) == 0) {
+                    fant = true;
+                    break;
+                }
                 //True -> p = p.høyre
-                pParent = p;
+                q = p;
                 p = p.høyre;
             } else {
                 //False -> p = p.venstre
-                pParent = p;
+                q = p;
                 p = p.venstre;
             }
         }
@@ -142,55 +146,57 @@ public class EksamenSBinTre<T> {
         if (p==rot){
             //alle blir slettet
             antall = 0;
-        } else {
+        }
+        //om den ikke match'er
+        else if (!fant){
+            return false;
+        }
+        else {
             Node<T> barn;
             //p er venstre barn
-            if (p == pParent.venstre){
+            if (q == q.forelder.venstre){
                 //p har ingen barn
-                if (p.høyre == null && p.venstre == null){
-                    pParent.venstre = null;
+                if (q.høyre == null && q.venstre == null){
+                    q.forelder.venstre = null;
                 }
                 //p har venstre barn
-                else if (p.venstre != null){
-                    barn = p.venstre;
-                    pParent.venstre = barn;
-                    barn.forelder = pParent;
-                    p.venstre = null;
+                else if (q.venstre != null){
+                    barn = q.venstre;
+                    q.forelder.venstre = barn;
+                    barn.forelder = q.forelder;
+                    q.venstre = null;
                 }
                 //p har høyre barn
                 else {
-                    barn = p.høyre;
-                    pParent.venstre = barn;
-                    barn.forelder = pParent;
-                    p.høyre = null;
+                    barn = q.høyre;
+                    q.forelder.venstre = barn;
+                    barn.forelder = q.forelder;
+                    q.høyre = null;
                 }
             }
             //p er høyre barn
-            else if (p == pParent.høyre){
+            else if (q == q.forelder.høyre){
                 //p har ingen barn
-                if (p.høyre == null && p.venstre == null){
-                    pParent.høyre = null;
+                if (q.høyre == null && q.venstre == null){
+                    q.forelder.høyre = null;
                 }
                 //p har venstre barn
-                else if (p.venstre != null){
-                    barn = p.venstre;
-                    pParent.høyre = barn;
-                    barn.forelder = pParent;
-                    p.venstre = null;
+                else if (q.venstre != null){
+                    barn = q.venstre;
+                    q.forelder.høyre = barn;
+                    barn.forelder = q.forelder;
+                    q.venstre = null;
                 }
                 //p har høyre barn
                 else {
-                    barn = p.høyre;
-                    pParent.høyre = barn;
-                    barn.forelder = pParent;
-                    p.høyre = null;
+                    barn = q.høyre;
+                    q.forelder.høyre = barn;
+                    barn.forelder = q.forelder;
+                    q.høyre = null;
                 }
             } else {
                 throw new IllegalArgumentException("Noe er galt med noden.");
             }
-
-
-
 
             //redusere antall
             antall--;
@@ -238,7 +244,7 @@ public class EksamenSBinTre<T> {
                     //når den blir fant, rearrangere peker
                     Node<T> barn;
                     //p er venstre barn
-                    if (p == pParent.venstre){
+                    if (pParent.venstre != null && p == pParent.venstre){
                         //p har ingen barn
                         if (p.høyre == null && p.venstre == null){
                             pParent.venstre = null;
