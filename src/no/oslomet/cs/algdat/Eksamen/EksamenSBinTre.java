@@ -126,13 +126,102 @@ public class EksamenSBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        //hjelpevariabel fjernet
-        //test om verdi = null
-        //else etablere hvor mye ganger skal verdien fjernes
-        //for hver antall, søke treet (start fra hvor metoden sist fjernet en verdi)
+
         //fjern noden
         //redusere antall
         //øke fjernet
+
+        int fjernet = 0;
+
+        //test om verdi og tre != null
+        if (verdi != null && !tom()) {
+            //etablere hvor mye ganger skal verdien fjernes
+            int antallLoops = antall(verdi);
+
+            if (antallLoops > 0) {
+                //hjelpevariabel node
+                Node<T> p = rot;
+                Node<T> pParent = null;
+
+                //søke treet antallLoops ganger
+                for (int i = 1; i <= antallLoops; i++) {
+
+                    //om p.verdi != null, søk på verdien i treet
+                    while (p != null) {
+                        int temp = this.comp.compare(verdi, p.verdi);
+                        //if verdi < p.verdi
+                        if (temp < 0) {
+                            pParent = p;
+                            p = p.venstre;
+                        } else if (temp > 0) {
+                            pParent = p;
+                            p = p.høyre;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    Node<T> barn;
+                    //når den blir fant, rearrangere peker
+                    //p er venstre barn
+                    if (p == pParent.venstre){
+                        //p har ingen barn
+                        if (p.høyre == null && p.venstre == null){
+                            pParent.venstre = null;
+                        }
+                        //p har venstre barn
+                        else if (p.venstre != null){
+                            barn = p.venstre;
+                            pParent.venstre = barn;
+                            barn.forelder = pParent;
+                            p.venstre = null;
+                        }
+                        //p har høyre barn
+                        else {
+                            barn = p.høyre;
+                            pParent.venstre = barn;
+                            barn.forelder = pParent;
+                            p.høyre = null;
+                        }
+                        p.forelder = null;
+
+                    }
+                    //p er høyre barn
+                    else if (p == pParent.høyre){
+                        //p har ingen barn
+                        if (p.høyre == null && p.venstre == null){
+                            pParent.høyre = null;
+                        }
+                        //p har venstre barn
+                        else if (p.venstre != null){
+                            barn = p.venstre;
+                            pParent.høyre = barn;
+                            barn.forelder = pParent;
+                            p.venstre = null;
+                        }
+                        //p har høyre barn
+                        else {
+                            barn = p.høyre;
+                            pParent.høyre = barn;
+                            barn.forelder = pParent;
+                            p.høyre = null;
+                        }
+                        p.forelder = null;
+                    } else {
+                        throw new IllegalArgumentException("Noe er galt med noden.");
+                    }
+
+                    //fjerning fullført
+                    fjernet++;
+                    antall--;
+
+                    //Start fra hvor metoden sist fjernet en verdi
+                    p = pParent;
+                    pParent = p.forelder;
+                }
+            }
+        }
+        return fjernet;
     }
 
     public int antall(T verdi) {
