@@ -116,7 +116,14 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //test om verdi = null -> return false
+
+        //hjelpevariabel node
+
+        //om verdi != null, søk på verdien i treet
+        //når den blir fant, rearrange peker
+        //slett noden
+        //return true
     }
 
     public int fjernAlle(T verdi) {
@@ -127,7 +134,6 @@ public class EksamenSBinTre<T> {
         int result = 0;
         //Sjekk om verdien er null
         if (verdi==null) result=antall;
-
         else{
             Node<T> p = rot;
             while(p != null){
@@ -218,7 +224,7 @@ public class EksamenSBinTre<T> {
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
         //if venstre != null -> venstre
-        if (p.venstre != null) postordenRecursive(p.venstre, oppgave);
+        if (p.venstre != null) postordenRecursive(px.venstre, oppgave);
         //if høyre != null -> høyre
         if (p.høyre != null) postordenRecursive(p.høyre, oppgave);
         //noden selv
