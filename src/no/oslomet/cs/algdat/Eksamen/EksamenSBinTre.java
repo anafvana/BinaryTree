@@ -152,35 +152,38 @@ public class EksamenSBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
+        //hjelpevariabel: må loop'en fortsette å kjøre?
         boolean fortsett = true;
         Node<T> q = p;
 
         while (fortsett){
             if (q.venstre == null){
+                //if q.venstre = null & q.høyre = null -> false
                 if (q.høyre == null){
                     fortsett = false;
-                } else {
+                }
+                //if q.venstre == null men q.høyre -> true
+                else {
                     q = q.høyre;
                 }
-            } else {
+            }
+            //if q.venstre -> true
+            else {
                 q = q.venstre;
             }
         }
         return q;
-        //søk først noden (venstre til høyre)
-        //boolean hjelpevariabel -> starter fra true
-        //while hjelpevariabel
-            //if p.venstre -> true
-            //if p.venstre == null men p.høyre -> fortsatt true
-            //while hjelpevariabel
-            //if p.venstre&p.høyre = null -> false
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
         Node<T> q = null;
         //sjekk if p er venstre eller høyre node (eller rot)
+
+        if (p.forelder == null){
+            //p er siste node og null må returneres
+        }
         //p er venstre node
-        if (p == p.forelder.venstre){
+        else if (p == p.forelder.venstre){
             //om venstre -> move til høyre laveste nephew
             if (p.forelder.høyre != null){
                 q = førstePostorden(p.forelder.høyre);
@@ -194,8 +197,6 @@ public class EksamenSBinTre<T> {
             //om høyre -> move up
             q = p.forelder;
         }
-        //ellers er p.forelder null og q fortsetter å være null
-
         return q;
     }
 
