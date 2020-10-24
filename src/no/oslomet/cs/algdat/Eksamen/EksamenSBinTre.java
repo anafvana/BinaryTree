@@ -117,17 +117,22 @@ public class EksamenSBinTre<T> {
 
     public boolean fjern(T verdi) {
         //test om verdi = null -> return false
-
         //hjelpevariabel node
-
         //om verdi != null, søk på verdien i treet
         //når den blir fant, rearrange peker
         //slett noden
+        //redusere antall
         //return true
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //hjelpevariabel fjernet
+        //test om verdi = null
+        //else etablere hvor mye ganger skal verdien fjernes
+        //for hver antall, søke treet (start fra hvor metoden sist fjernet en verdi)
+        //fjern noden
+        //redusere antall
+        //øke fjernet
     }
 
     public int antall(T verdi) {
