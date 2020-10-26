@@ -328,7 +328,19 @@ public class EksamenSBinTre<T> {
     }
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        nullstillRek(rot);
+    }
+
+    private void nullstillRek(Node<T> p){
+        //if venstre != null -> venstre
+        if (p.venstre != null) nullstillRek(p.venstre);
+        //if høyre != null -> høyre
+        if (p.høyre != null) nullstillRek(p.høyre);
+        //noden selv
+        p.høyre = null;
+        p.venstre = null;
+        p.forelder = null;
+        antall--;
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
