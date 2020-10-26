@@ -126,7 +126,6 @@ public class EksamenSBinTre<T> {
         //søk på verdien i treet i post orden
         while(p != null){
             q = p;
-            if (p.verdi != verdi) break;
             p = nestePostorden(p);
         }
 
@@ -137,8 +136,10 @@ public class EksamenSBinTre<T> {
 
         //blir det fant, rearrangere peker
         //N.B.: den laveste duplicate kan kun ha høyre barn
-        if (q == qParent.venstre) qParent.venstre = q.høyre;
-        else if (q == qParent.høyre) qParent.høyre = q.høyre;
+        if (qParent != null) {
+            if (q == qParent.venstre) qParent.venstre = q.høyre;
+            else if (q == qParent.høyre) qParent.høyre = q.høyre;
+        }
 
         //slett noden
         q.venstre = null;
