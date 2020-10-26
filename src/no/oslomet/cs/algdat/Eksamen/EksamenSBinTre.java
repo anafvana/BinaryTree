@@ -117,94 +117,37 @@ public class EksamenSBinTre<T> {
 
     public boolean fjern(T verdi) {
         //hjelpevariabel node
-        Node<T> p = rot;
+        Node<T> p = førstePostorden(rot);
         Node<T> q = null;
-        boolean fant = false;
 
         //test om verdi = null -> return false
         if (verdi == null || p == null) return false;
 
-        //søk på verdien i treet
+        //søk på verdien i treet i post orden
         while(p != null){
-            //Sjekk om verdien >= p
-            if (this.comp.compare(verdi, p.verdi) >= 0){
-                if (this.comp.compare(verdi, p.verdi) == 0) {
-                    fant = true;
-                    break;
-                }
-                //True -> p = p.høyre
-                q = p;
-                p = p.høyre;
-            } else {
-                //False -> p = p.venstre
-                q = p;
-                p = p.venstre;
-            }
+            q = p;
+            if (p.verdi != verdi) break;
+            p = nestePostorden(p);
         }
 
-        //når den blir fant, rearrange peker
-        if (p==rot){
-            //alle blir slettet
-            antall = 0;
-        }
-        //om den ikke match'er
-        else if (!fant){
-            return false;
-        }
-        else {
-            Node<T> barn;
-            //p er venstre barn
-            if (q == q.forelder.venstre){
-                //p har ingen barn
-                if (q.høyre == null && q.venstre == null){
-                    q.forelder.venstre = null;
-                }
-                //p har venstre barn
-                else if (q.venstre != null){
-                    barn = q.venstre;
-                    q.forelder.venstre = barn;
-                    barn.forelder = q.forelder;
-                    q.venstre = null;
-                }
-                //p har høyre barn
-                else {
-                    barn = q.høyre;
-                    q.forelder.venstre = barn;
-                    barn.forelder = q.forelder;
-                    q.høyre = null;
-                }
-            }
-            //p er høyre barn
-            else if (q == q.forelder.høyre){
-                //p har ingen barn
-                if (q.høyre == null && q.venstre == null){
-                    q.forelder.høyre = null;
-                }
-                //p har venstre barn
-                else if (q.venstre != null){
-                    barn = q.venstre;
-                    q.forelder.høyre = barn;
-                    barn.forelder = q.forelder;
-                    q.venstre = null;
-                }
-                //p har høyre barn
-                else {
-                    barn = q.høyre;
-                    q.forelder.høyre = barn;
-                    barn.forelder = q.forelder;
-                    q.høyre = null;
-                }
-            } else {
-                throw new IllegalArgumentException("Noe er galt med noden.");
-            }
+        //blir det ikke fant, returner false
+        if (q.verdi != verdi) return false;
 
-            //redusere antall
-            antall--;
-        }
+        Node<T> qParent = q.forelder;
+
+        //blir det fant, rearrangere peker
+        //N.B.: den laveste duplicate kan kun ha høyre barn
+        if (q == qParent.venstre) qParent.venstre = q.høyre;
+        else if (q == qParent.høyre) qParent.høyre = q.høyre;
+
         //slett noden
-        p.venstre = null;
-        p.høyre = null;
-        p.forelder = null;
+        q.venstre = null;
+        q.høyre = null;
+        q.forelder = null;
+        q.verdi = null;
+
+        //redusere antall
+        antall--;
 
         return true;
     }
