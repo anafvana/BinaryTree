@@ -119,20 +119,17 @@ public class EksamenSBinTre<T> {
 
     public boolean fjern(T verdi) {
         //handle null verdi
-        if (verdi == null) return false;
+        if (verdi == null || rot.verdi == null) return false;
 
         //hjelpevariabler
-        Node<T> p = rot, pParent = null;
+        Node<T> p = førstePostorden(rot), pParent = p.forelder;
 
         //søker etter verdien
         while(p != null){
             int temp = comp.compare(verdi,p.verdi);
-            if (temp < 0) {
+            if (temp != 0) {
                 pParent = p;
-                p = p.venstre;
-            } else if (temp > 0){
-                pParent = p;
-                p = p.høyre;
+                p = nestePostorden(p);
             }
             //finner verdien
             else break;
