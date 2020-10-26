@@ -91,9 +91,11 @@ public class EksamenSBinTre<T> {
 
         //Søk riktig posisjon og sett sist verdien i "linje" som forelder
         while (p != null){
-            pParent = p;
-            temp = this.comp.compare(verdi, p.verdi);
-            p = temp < 0 ? p.venstre : p.høyre;
+            if (p.verdi != null) {
+                pParent = p;
+                temp = this.comp.compare(verdi, p.verdi);
+                p = temp < 0 ? p.venstre : p.høyre;
+            } else { p = null; }
         }
 
         //Lag ny node med verdien
