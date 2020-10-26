@@ -95,7 +95,7 @@ public class EksamenSBinTre<T> {
                 pParent = p;
                 temp = this.comp.compare(verdi, p.verdi);
                 p = temp < 0 ? p.venstre : p.høyre;
-            } else { p = null; }
+            } else p = null;
         }
 
         //Lag ny node med verdien
@@ -118,40 +118,53 @@ public class EksamenSBinTre<T> {
     }
 
     public boolean fjern(T verdi) {
-        //hjelpevariabel node
-        Node<T> p = førstePostorden(rot);
-        Node<T> q = null;
+        //handle null verdi
+        if (verdi == null) return false;
 
-        //test om verdi = null -> return false
-        if (verdi == null || p == null) return false;
+        //hjelpevariabler
+        Node<T> p = rot, pParent = null;
 
-        //søk på verdien i treet i post orden
+        //søker etter verdien
         while(p != null){
-            q = p;
-            p = nestePostorden(p);
+            int temp = comp.compare(verdi,p.verdi);
+            if (temp < 0) {
+                pParent = p;
+                p = p.venstre;
+            } else if (temp > 0){
+                pParent = p;
+                p = p.høyre;
+            }
+            //finner verdien
+            else break;
         }
 
-        //blir det ikke fant, returner false
-        if (q.verdi != verdi) return false;
+        //verdien ikke fant
+        if (p==null) return false;
 
-        Node<T> qParent = q.forelder;
+        //hvis noden som fjernes har kun et barn
+        if (p.venstre == null || p.høyre == null){
+            Node<T> barn;
+            if (p.venstre != null) barn = p.venstre;
+            else barn = p.høyre;
 
-        //blir det fant, rearrangere peker
-        //N.B.: den laveste duplicate kan kun ha høyre barn
-        if (qParent != null) {
-            if (q == qParent.venstre) qParent.venstre = q.høyre;
-            else if (q == qParent.høyre) qParent.høyre = q.høyre;
+            if (p==rot) rot = barn;
+            else if (p == pParent.venstre) pParent.venstre = barn;
+            else pParent.høyre = barn;
         }
+        //hvis noden som fjernes har begge barn
+        else {
+            Node<T> s = p, r = p.høyre;
+            while (r.venstre != null){
+                s=r;
+                r=r.venstre;
+            }
 
-        //slett noden
-        q.venstre = null;
-        q.høyre = null;
-        q.forelder = null;
-        q.verdi = null;
+            p.verdi = r.verdi;
 
-        //redusere antall
+            if (s != p) s.venstre = r.høyre;
+            else s.høyre = r.høyre;
+        }
         antall--;
-
         return true;
     }
 
