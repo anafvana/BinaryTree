@@ -199,7 +199,85 @@ public class EksamenSBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        return 0;
+        int fjernet = 0;
+        Node<T> p = førstePostorden(rot), q=null;
+
+        while (p != rot){
+            q=nestePostorden(p);
+            if(p.verdi == verdi){
+                boolean ok = fjernNode(p, verdi);
+                if (ok) fjernet++;
+                p=q;
+            }
+        }
+        if (rot.verdi == verdi){
+            boolean ok = fjernNode(rot, verdi);
+            if (ok) fjernet++;
+        }
+
+        return fjernet;
+    }
+
+    private boolean fjernNode(Node<T> p, T verdi){
+        if (p == rot) {
+            int temp = comp.compare(verdi, p.verdi);
+            if (temp != 0) return false;
+        }
+
+        //hvis noden som fjernes har mindre enn to barn
+        if (p.venstre == null || p.høyre == null){
+            Node<T> barn;
+            if (p.venstre != null) barn = p.venstre;
+            else barn = p.høyre;
+
+            //hvis noden har ingen barn
+            if (barn == null && p != rot){
+                if (p == p.forelder.venstre) {
+                    p.forelder.venstre = null;
+                } else if (p == p.forelder.høyre){
+                    p.forelder.høyre = null;
+                }
+            }
+            //hvis noden har et barn
+            else {
+                if (p == rot) {
+                    rot = barn;
+                } else if (p == p.forelder.venstre) {
+                    p.forelder.venstre = barn;
+                } else {
+                    p.forelder.høyre = barn;
+                }
+                if (barn != null) barn.forelder = p.forelder;
+            }
+            //fjerner alle pekere fra p
+            p.forelder = null;
+            p.høyre = null;
+            p.venstre = null;
+        }
+        //hvis noden som fjernes har begge barn
+        else {
+            //bruker inorder til å remplasere fjernet noden
+            Node<T> rParent = p, r = p.høyre;
+            while (r.venstre != null){
+                rParent=r;
+                r=r.venstre;
+            }
+
+            p.verdi = r.verdi;
+
+            if (rParent != p) rParent.venstre = r.høyre;
+            else rParent.høyre = r.høyre;
+
+            //etablerer ny forelder relasjon til r's (former) barn som blir rParents sin barn
+            rParent.høyre.forelder = rParent;
+
+            //fjerner alle pekere fra r
+            r.forelder = null;
+            r.høyre = null;
+            r.venstre = null;
+        }
+        antall--;
+        return true;
     }
 
     public int antall(T verdi) {
