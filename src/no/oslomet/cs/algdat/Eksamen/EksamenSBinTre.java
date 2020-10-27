@@ -199,7 +199,6 @@ public class EksamenSBinTre<T> {
                 else break;
             }
         }
-
         return fjernNode(p, verdi);
     }
 
@@ -207,13 +206,17 @@ public class EksamenSBinTre<T> {
         int fjernet = 0;
         Node<T> p = førstePostorden(rot), q;
         while (p != rot){
+            //ser etter neste node i postOrden før p blir slettet
             q=nestePostorden(p);
+            //hvis verdien finnes
             if(p.verdi == verdi){
+                //slett noden
                 boolean ok = fjernNode(p, verdi);
                 if (ok) fjernet++;
             }
             p=q;
         }
+        //handler edge-case av verdien i rot
         if (rot.verdi == verdi){
             boolean ok = fjernNode(rot, verdi);
             if (ok) fjernet++;
@@ -258,6 +261,7 @@ public class EksamenSBinTre<T> {
         p.høyre = null;
         p.venstre = null;
         p.forelder = null;
+        //ikke reduserer antall hvis rot er null, men gjør det enten når p er ikke rot eller ikke null
         if (p!=rot || p.verdi != null){
             p.verdi = null;
             antall--;
