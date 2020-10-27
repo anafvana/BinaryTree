@@ -97,7 +97,6 @@ public class EksamenSBinTre<T> {
                 p = temp < 0 ? p.venstre : p.høyre;
             } else p = null;
         }
-
         //Lag ny node med verdien
         p = new Node<>(verdi, null, null, null);
 
@@ -117,6 +116,7 @@ public class EksamenSBinTre<T> {
         return true; //Vellykket!
     }
 
+    //Inspirert av Programkode 5.2.8 d)
     public boolean fjern(T verdi) {
         //handle null verdi
         if (verdi == null || rot.verdi == null) return false;
@@ -125,139 +125,81 @@ public class EksamenSBinTre<T> {
         Node<T> p = førstePostorden(rot), pParent = p.forelder;
 
         //søker etter verdien
-        while(p != null){
-            int temp = comp.compare(verdi,p.verdi);
-            if (temp != 0) {
-                pParent = p;
-                p = nestePostorden(p);
+        if (p.verdi != null) {
+            while (p != rot) {
+                int temp = comp.compare(verdi, p.verdi);
+                if (temp != 0) {
+                    p = nestePostorden(p);
+                    pParent = p.forelder;
+                }
+                //finner verdien
+                else break;
             }
-            //finner verdien
-            else break;
         }
 
-        //verdien ikke fant
-        if (p==null) return false;
+        if (p == rot) {
+            int temp = comp.compare(verdi, p.verdi);
+            if (temp != 0) return false;
+        }
 
-        //hvis noden som fjernes har kun et barn
+        //hvis noden som fjernes har mindre enn to barn
         if (p.venstre == null || p.høyre == null){
             Node<T> barn;
             if (p.venstre != null) barn = p.venstre;
             else barn = p.høyre;
 
-            if (p==rot) rot = barn;
-            else if (p == pParent.venstre) pParent.venstre = barn;
-            else pParent.høyre = barn;
+            //hvis noden har ingen barn
+            if (barn == null && p != rot){
+                if (p == pParent.venstre) {
+                    pParent.venstre = null;
+                } else if (p == pParent.høyre){
+                    pParent.høyre = null;
+                }
+            }
+            //hvis noden har et barn
+            else {
+                if (p == rot) {
+                    rot = barn;
+                } else if (p == pParent.venstre) {
+                    pParent.venstre = barn;
+                } else {
+                    pParent.høyre = barn;
+                }
+                if (barn != null) barn.forelder = pParent;
+            }
+            //fjerner alle pekere fra p
+            p.forelder = null;
+            p.høyre = null;
+            p.venstre = null;
         }
         //hvis noden som fjernes har begge barn
         else {
-            Node<T> s = p, r = p.høyre;
+            //bruker inorder til å remplasere fjernet noden
+            Node<T> rParent = p, r = p.høyre;
             while (r.venstre != null){
-                s=r;
+                rParent=r;
                 r=r.venstre;
             }
 
             p.verdi = r.verdi;
 
-            if (s != p) s.venstre = r.høyre;
-            else s.høyre = r.høyre;
+            if (rParent != p) rParent.venstre = r.høyre;
+            else rParent.høyre = r.høyre;
+
+            //etablerer ny forelder relasjon til r's (former) barn som blir rParents sin barn
+            rParent.høyre.forelder = rParent;
+
+            //fjerner alle pekere fra r
+            r.forelder = null;
+            r.høyre = null;
+            r.venstre = null;
         }
         antall--;
         return true;
     }
 
     public int fjernAlle(T verdi) {
-        //hjelpevariabel -> hvor mye har blitt fjernet
-        int fjernet = 0;
-
-        //test om verdi og tre != null
-        if (verdi != null && !tom()) {
-            //etablere hvor mye ganger skal verdien fjernes
-            int antallLoops = antall(verdi);
-
-            if (antallLoops > 0) {
-                //hjelpevariabel node
-                Node<T> p = rot;
-                Node<T> pParent = null;
-
-                //søke treet antallLoops ganger
-                for (int i = 1; i <= antallLoops; i++) {
-
-                    //om p.verdi != null, søk på verdien i treet
-                    while (p != null) {
-                        int temp = this.comp.compare(verdi, p.verdi);
-                        //if verdi < p.verdi
-                        if (temp < 0) {
-                            pParent = p;
-                            p = p.venstre;
-                        } else if (temp > 0) {
-                            pParent = p;
-                            p = p.høyre;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    //når den blir fant, rearrangere peker
-                    Node<T> barn;
-                    //p er venstre barn
-                    if (pParent.venstre != null && p == pParent.venstre){
-                        //p har ingen barn
-                        if (p.høyre == null && p.venstre == null){
-                            pParent.venstre = null;
-                        }
-                        //p har venstre barn
-                        else if (p.venstre != null){
-                            barn = p.venstre;
-                            pParent.venstre = barn;
-                            barn.forelder = pParent;
-                            p.venstre = null;
-                        }
-                        //p har høyre barn
-                        else {
-                            barn = p.høyre;
-                            pParent.venstre = barn;
-                            barn.forelder = pParent;
-                            p.høyre = null;
-                        }
-                        p.forelder = null;
-
-                    }
-                    //p er høyre barn
-                    else if (p == pParent.høyre){
-                        //p har ingen barn
-                        if (p.høyre == null && p.venstre == null){
-                            pParent.høyre = null;
-                        }
-                        //p har venstre barn
-                        else if (p.venstre != null){
-                            barn = p.venstre;
-                            pParent.høyre = barn;
-                            barn.forelder = pParent;
-                            p.venstre = null;
-                        }
-                        //p har høyre barn
-                        else {
-                            barn = p.høyre;
-                            pParent.høyre = barn;
-                            barn.forelder = pParent;
-                            p.høyre = null;
-                        }
-                        p.forelder = null;
-                    } else {
-                        throw new IllegalArgumentException("Noe er galt med noden.");
-                    }
-
-                    //fjerning fullført
-                    fjernet++;
-                    antall--;
-
-                    //Start fra hvor metoden sist fjernet en verdi
-                    p = pParent;
-                    pParent = p.forelder;
-                }
-            }
-        }
-        return fjernet;
+        return 0;
     }
 
     public int antall(T verdi) {
