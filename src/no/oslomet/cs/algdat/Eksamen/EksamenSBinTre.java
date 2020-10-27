@@ -185,7 +185,7 @@ public class EksamenSBinTre<T> {
         if (verdi == null || rot.verdi == null) return false;
 
         //hjelpevariabler
-        Node<T> p = førstePostorden(rot), pParent = p.forelder;
+        Node<T> p = førstePostorden(rot);
 
         //søker etter verdien
         if (p.verdi != null) {
@@ -193,7 +193,6 @@ public class EksamenSBinTre<T> {
                 int temp = comp.compare(verdi, p.verdi);
                 if (temp != 0) {
                     p = nestePostorden(p);
-                    pParent = p.forelder;
                 }
                 //finner verdien
                 else break;
