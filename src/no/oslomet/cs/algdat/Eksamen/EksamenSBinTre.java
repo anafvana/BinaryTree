@@ -343,21 +343,35 @@ public class EksamenSBinTre<T> {
 
     public ArrayList<T> serialize() {
         //Lag en kø (LinkedList?)
-        //Lag arrayList
+        Queue<Node<T>> kø = new LinkedList<>();
+        //Lag ArrayList
+        ArrayList<T> al = new ArrayList<>();
 
-        //Ta noden p
-        //legg barn (eller null) i kø
-        //legg p til ArrayList
-        //gå gjennom køen og ta barn inn i køen
-        //sette verdiene fra køen inni arrayList
-        //slutt når alle barn er null
+        //Noden som holder verdi som går inn i ArrayList
+        Node<T> p = rot;
+        //Antall tall som ble lagt til arraylisten
+        int innLagt = 0;
+
+        while(innLagt<antall){
+            //legger barn til køen
+            if (p.venstre != null) kø.add(p.venstre);
+            if (p.høyre != null) kø.add(p.høyre);
+            //legger verdien til arraylisten
+            if (p.verdi != null) al.add(p.verdi);
+
+            //ny p verdien
+            p=kø.remove();
+            //teller opp lagt inn verdier
+            innLagt++;
+        }
 
         //returnere arrayList
-
+        return al;
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //enhanced for-loop med arraylisten
+        //bruk leggIn() til å legge inn verdiene som noder
     }
 
 
