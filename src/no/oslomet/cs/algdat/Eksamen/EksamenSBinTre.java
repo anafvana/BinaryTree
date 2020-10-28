@@ -342,7 +342,18 @@ public class EksamenSBinTre<T> {
     }
 
     public ArrayList<T> serialize() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Lag en kø (LinkedList?)
+        //Lag arrayList
+
+        //Ta noden p
+        //legg barn (eller null) i kø
+        //legg p til ArrayList
+        //gå gjennom køen og ta barn inn i køen
+        //sette verdiene fra køen inni arrayList
+        //slutt når alle barn er null
+
+        //returnere arrayList
+
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
