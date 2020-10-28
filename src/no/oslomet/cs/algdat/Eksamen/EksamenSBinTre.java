@@ -370,8 +370,15 @@ public class EksamenSBinTre<T> {
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
+        //tre som fylles ut
+        EksamenSBinTre<K> tre = new EksamenSBinTre<>(c);
+
         //enhanced for-loop med arraylisten
-        //bruk leggIn() til å legge inn verdiene som noder
+        for(K d : data){
+            //bruk leggIn() til å legge inn verdiene som noder
+            tre.leggInn(d);
+        }
+        return tre;
     }
 
 
