@@ -360,7 +360,7 @@ public class EksamenSBinTre<T> {
             if (p.verdi != null) al.add(p.verdi);
 
             //ny p verdien
-            p=kø.remove();
+            p=kø.poll();
             //teller opp lagt inn verdier
             innLagt++;
         }
