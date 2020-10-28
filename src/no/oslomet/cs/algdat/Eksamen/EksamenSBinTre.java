@@ -155,7 +155,7 @@ public class EksamenSBinTre<T> {
         }
         //hvis noden som fjernes har begge barn
         else {
-            //bruker inorder til å remplasere fjernet noden
+            //bruker inorder til å erstatte fjernet noden
             Node<T> rParent = p, r = p.høyre;
             while (r.venstre != null){
                 rParent=r;
@@ -342,7 +342,7 @@ public class EksamenSBinTre<T> {
     }
 
     public ArrayList<T> serialize() {
-        //Lag en kø (LinkedList?)
+        //Lag en kø (LinkedList)
         Queue<Node<T>> kø = new LinkedList<>();
         //Lag ArrayList
         ArrayList<T> al = new ArrayList<>();

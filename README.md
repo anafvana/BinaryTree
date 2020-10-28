@@ -14,7 +14,7 @@ Se oblig-tekst for alle krav, og husk spesielt på følgende:
 
 # Beskrivelse av oppgaveløsning (4-8 linjer/setninger per oppgave)
 
-Jeg har brukt git til å dokumentere arbeidet mitt. Jeg har XX commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
+Jeg har brukt git til å dokumentere arbeidet mitt. Jeg har 39 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
 
 * Oppgave 1: Løste ved å implementere Programkode 5.2.3 med endringer slik at venstre, høyre og foreldre verdiene er etablert. 
 Først søkte jeg riktig plassering av verdien i binærtre og fant siste noden i "linjen". Da etablerte jeg om verdien var større, mindre eller lik foreldernodenverdien.
@@ -33,4 +33,12 @@ Mønstrene ble identifiserte ved å tegne trær og bruke piler til å se hvilken
 Da, i en loop, som kjørte til p ble lik null, ble oppgaven kjørt med p.verdi og p ble oppdatert til neste noden i postorden med nestePostorden(p).
 Den rekursive metoden ble kjørt ved å, først, kalle postordenRecursive() i p.venstre om den ikke var null. Da ble postordenRecursive() kalt i p.høyre. 
 Endelig ble oppgaven utført i p.verdien (noden selv). Den ble inspirert av postordens rekursiv definisjon i pensum, som ligger under Programkode 5.1.7 e).
-* Oppgave 5:  
+* Oppgave 5:  serialize() metoden ble løst ved å bruke en while-loop som sjekket om antall verdier lagt til array (hjelpevariabel innLagt) var minst enn antall noder i treet.
+Inn i loopen ble noden p sine barna lagt til køen (om de ikke var null) og da var p.verdi lagt til ArrayList'en. 
+Node p ble oppdatert til først i køen (og noden ble tatt ut av køen) og innLagt ble oppdatert. Den kjøres så langt som det er verdier for å legge til ArrayListen som deretter returneres.
+deserialize() ble løst ved rett og slett ta hver verdi fra ArrayListen og legge inn treet med leggInn() metoden.
+* Oppgave 6: fjern() ble løst ved å lette etter verdien i treet med førstePostorden og nestePostorden, mens komparatoren brukes til å identifisere første gangen noden.verdi er lik input verdi.
+Da sendes p til fjernNoden() hjelpemetode, som også brukes til fjernAlle() [skal forklare den snart] og returneres den fjernNoden() sin boolean output.
+fjernAlle() er lik fjern(), men har en hjelpevariabel som teller ganger verdien ble slettet, og som returneres.
+fjernNode(), ble inspirert av Programkode 5.2.8 d): hvis p=rot, men p.verdi!=verdi, avbrytes metoden; ellers, handler det case'ne: 1.ingen barn, blir p.forelder barn node (som var p) bare fjernet; 2. et barn, blir p erstatte med p sin enkelt barn; 3. to barn, brukes det inorder for å erstatte den fjernet noden med den siste venstre noden i bransjen som har p.høyre som ancestor.
+nullstill() ble laget rekursivt og den finner siste noden i bransjen, fjerner den (forelder, barn og verdi), og fortsetter å kjøre til den finner og fjerner roten.
